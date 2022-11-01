@@ -1,7 +1,11 @@
 import React from "react";
 import UserView from "../../Components/Template/UserView";
+import firebase from '../../Config/firebase'
 
 const UserViewWrapper = () => {
+
+  
+
   const data = [
     {
       franja: "6:00 - 7:00",
