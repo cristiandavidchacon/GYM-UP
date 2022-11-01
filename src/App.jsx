@@ -1,10 +1,13 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserViewWrapper from "./Pages/UserViewWrapper";
 
 function App() {
   return (
-    <div>
-      <UserViewWrapper />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/administrar-reservas" element={<UserViewWrapper />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
