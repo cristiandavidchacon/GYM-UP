@@ -1,0 +1,11 @@
+.user-view-item{
+    padding: 1rem;
+}
+
+.user-view-cancel{
+    padding-top: 2rem 1rem 1rem 1rem;
+}
+
+.user-view-container{
+    flex-flow: column nowrap;
+}

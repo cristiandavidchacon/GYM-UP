@@ -1,12 +1,11 @@
-import { useState } from 'react'
+import UserViewWrapper from "./Pages/UserViewWrapper";
 
 function App() {
-
   return (
     <div>
-      <p>Hola</p>
+      <UserViewWrapper />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
