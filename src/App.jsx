@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UserViewWrapper from "./Pages/UserViewWrapper";
+import UserViewWrapper from "./Pages/UserView/wrapper";
 
 function App() {
   return (
