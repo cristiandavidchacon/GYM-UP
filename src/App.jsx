@@ -5,7 +5,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/administrar-reservas" element={<UserViewWrapper />} />
+        <Route
+          path="/administrar-reservas/:userid"
+          element={<UserViewWrapper />}
+        />
       </Routes>
     </BrowserRouter>
   );

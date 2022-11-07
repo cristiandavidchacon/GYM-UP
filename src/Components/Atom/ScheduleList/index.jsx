@@ -1,18 +1,11 @@
 import Schedule from "../Schedule";
 import "./style.css";
 
-const ScheduleList = ({ schedules }) => {
-  for (let i = 0; i < schedules.length; i++) {
-    const schedule = schedules[i];
-
-    const newSchedule = { ...schedule, id: i };
-    schedules[i] = newSchedule;
-  }
-
+const ScheduleList = ({ userId, schedules }) => {
   const schedulesList = schedules.map((currentSchedule) => {
     return (
-      <div key={currentSchedule.id} className="schedule-item">
-        <Schedule data={currentSchedule} />
+      <div key={currentSchedule.turnId} className="schedule-item">
+        <Schedule userId={userId} data={currentSchedule} />
       </div>
     );
   });
