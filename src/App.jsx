@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import RegisterView from "./Pages/RegisterView";
 import UserViewWrapper from "./Pages/UserView/wrapper";
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
           path="/administrar-reservas/:userid"
           element={<UserViewWrapper />}
         />
+        <Route path="/registrar-ingreso" element={<RegisterView />} />
       </Routes>
     </BrowserRouter>
   );

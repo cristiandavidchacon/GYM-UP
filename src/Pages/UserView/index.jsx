@@ -2,7 +2,7 @@ import { Button } from "antd";
 import moment from "moment/moment";
 import "moment/locale/es";
 import ScheduleList from "../../Components/Atom/ScheduleList";
-import { updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc, deleteDoc } from "firebase/firestore";
 import db from "../../Config/firebase";
 import "./style.css";
 
@@ -23,10 +23,17 @@ const UserView = ({ user, data }) => {
     const userRef = doc(db, "users", user.id);
     updateDoc(userRef, {
       turn: "",
+      assistanceId: "",
     });
   };
 
+  const deleteAssistance = () => {
+    const assistance = doc(db, "assistance", user.assistanceId);
+    deleteDoc(assistance);
+  };
+
   const handleClick = () => {
+    deleteAssistance();
     updateTurns();
     updateUser();
   };
