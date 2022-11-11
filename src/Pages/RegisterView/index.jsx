@@ -1,38 +1,54 @@
 import { Button, Form, Input } from "antd";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import moment from "moment/moment";
-import { useRef } from "react";
+import { useState, useEffect } from "react";
 import db from "../../Config/firebase";
 import { dateFormat } from "../../Config/moment.format";
 
 const RegisterView = () => {
-  const userId = useRef("");
-  const assistanceId = useRef("");
+  const [userId, setUserId] = useState("");
+  const [assistanceId, setAssistanceId] = useState("");
   const currentDay = moment().format(dateFormat);
 
-  const assistanceRef = collection(db, "assistance");
-  const assistanceQuery = query(
-    assistanceRef,
-    where("userId", "==", userId.current),
-    where("day", "==", currentDay)
-  );
-
-  const getAssistance = async () => {
-    const subUser = onSnapshot(assistanceQuery, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        assistanceId.current = doc?.id;
-        console.log("entro");
+  useEffect(() => {
+    const assistanceRef = collection(db, "assistance");
+    const assistanceQuery = query(
+      assistanceRef,
+      where("userId", "==", userId),
+      where("day", "==", currentDay)
+    );
+    const subAssistance = onSnapshot(assistanceQuery, (querySnapshot) => {
+      querySnapshot.forEach((document) => {
+        setAssistanceId(document.id);
       });
     });
 
-    await subUser();
-    console.log(assistanceId.current);
-  };
+    return () => {
+      if (userId.length > 0) {
+        subAssistance();
+      }
+    };
+  }, [userId]);
 
-  const onFinish = async (values) => {
-    userId.current = values.userId;
-    await getAssistance();
-    //actualizar
+  useEffect(() => {
+    if (assistanceId.length > 0) {
+      const assistanceRef = doc(db, "assistance", assistanceId);
+      updateDoc(assistanceRef, {
+        assist: true,
+      });
+    }
+  }, [assistanceId]);
+
+  const onFinish = (values) => {
+    setUserId(values.userId);
+    alert("Registro exitoso");
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -40,42 +56,44 @@ const RegisterView = () => {
   };
 
   return (
-    <Form
-      name="basic"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="on"
-    >
-      <Form.Item
-        label="Ingrese el Id del usuario"
-        name="userId"
-        rules={[
-          {
-            required: true,
-            message: "Por favor ingrese un numero de identificacion",
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
+    <div>
+      <Form
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
         wrapperCol={{
-          offset: 8,
           span: 16,
         }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="on"
       >
-        <Button type="primary" htmlType="submit">
-          Validar Asistencia
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item
+          label="Ingrese el Id del usuario"
+          name="userId"
+          rules={[
+            {
+              required: true,
+              message: "Por favor ingrese un numero de identificacion",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Validar Asistencia
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 export default RegisterView;
