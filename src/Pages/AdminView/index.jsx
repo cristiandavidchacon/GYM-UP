@@ -1,7 +1,7 @@
 import React from "react";
 
 const AdminView = () => {
-  return <div>AdminView</div>;
+  return <div>AdminViews</div>;
 };
 
 export default AdminView;
