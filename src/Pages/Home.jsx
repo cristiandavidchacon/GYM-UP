@@ -9,10 +9,10 @@ function Home() {
   return (
     <div>
       {currentUser?.role === "U" ? (
-        <Navigate to="/gestionar-mis-reservas/test" />
+        <Navigate to={`/gestionar-mis-reservas/${currentUser.uID}`}/>
       ) : currentUser?.role === "A" ? (
         <AdminView />
-      ) : (
+      ) : currentUser?.role==="O"&&(
         <RegisterView />
       )}
     </div>

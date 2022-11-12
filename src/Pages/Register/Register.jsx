@@ -32,6 +32,7 @@ function Register() {
     codigo: "",
     role: "U",
     password: "",
+    turn: "",
   });
 
   // handle input change
@@ -60,6 +61,7 @@ function Register() {
       role: credentials.role,
       codigo: credentials.codigo,
       uID: userData.uid,
+      turn:credentials.turn
     });
   };
 

@@ -8,7 +8,7 @@ import "./style.css";
 import { useAuth } from "../../../context/AuthContext";
 import { Navigate } from "react-router-dom";
 
-const UserView = ({ user, data }) => {
+const UserView = ({data }) => {
   const currentDay = moment().locale("es").format("dddd, D [de] MMM");
   const { currentUser, userData, logOut } = useAuth();
 
@@ -23,7 +23,7 @@ const UserView = ({ user, data }) => {
   };
 
   const updateUser = () => {
-    const userRef = doc(db, "users", user.id);
+    const userRef = doc(db, "users", currentUser.uID);
     updateDoc(userRef, {
       turn: "",
       assistanceId: "",
@@ -31,7 +31,7 @@ const UserView = ({ user, data }) => {
   };
 
   const deleteAssistance = () => {
-    const assistance = doc(db, "assistance", user.assistanceId);
+    const assistance = doc(db, "assistance", currentUser.assistanceId);
     deleteDoc(assistance);
   };
 
@@ -45,14 +45,14 @@ const UserView = ({ user, data }) => {
     return <Navigate to="/login" />;
   }
 
-  if (user) {
-    if (user.turn !== "") {
+  if (currentUser) {
+    if (currentUser.turn !== "") {
       return (
         <div className="user-view-container">
           <h1 className="user-view-item">{currentDay ?? "-"}</h1>
           <div className="user-view-item">
             <h2>Tienes un turno asignado:</h2>
-            <p>{user.turn ?? "-"}</p>
+            <p>{currentUser.turn ?? "-"}</p>
           </div>
 
           <div className="user-view-cancel">
@@ -69,7 +69,7 @@ const UserView = ({ user, data }) => {
           <h1 className="user-view-item">{currentDay ?? "-"}</h1>
           <button onClick={logOut}>Cerrar Sesion</button>
           <div className="user-view-item">
-            <ScheduleList userId={user.id} schedules={data} />
+            <ScheduleList userId={currentUser.uID} schedules={data} />
           </div>
         </div>
       );
