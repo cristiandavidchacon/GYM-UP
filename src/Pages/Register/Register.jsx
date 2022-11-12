@@ -17,7 +17,9 @@ import { Navigate, Link } from "react-router-dom";
 
 // import db from "../config/firebase";
 
-// import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+import db from "../../Config/firebase";
+
+import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 
 function Register() {
   const { userData, signUp } = useAuth();
@@ -27,6 +29,7 @@ function Register() {
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
+    codigo: "",
     role: "U",
     password: "",
   });
@@ -50,7 +53,18 @@ function Register() {
     }
   };
 
+  const setData = async (id) => {
+    await setDoc(doc(db, "users", id), {
+      name: credentials.name,
+      email: credentials.email,
+      role: credentials.role,
+      codigo: credentials.codigo,
+      uID: userData.uid,
+    });
+  };
+
   if (userData) {
+    setData(userData.uid);
     return <Navigate to="/gestionar-mis-reservas/test" />;
   }
 
@@ -71,6 +85,15 @@ function Register() {
           <Input
             name="email"
             labelPlaceholder="Correo institucional"
+            fullWidth
+            required
+            clearable
+            onChange={handleChange}
+            className="login__form__input"
+          />
+          <Input
+            name="codigo"
+            labelPlaceholder="Codigo del estudiante"
             fullWidth
             required
             clearable

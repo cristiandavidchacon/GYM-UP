@@ -6,6 +6,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../src/Config/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import db from "../src/Config/firebase";
 
 const AuthContext = createContext();
 
@@ -15,11 +17,27 @@ export const useAuth = () => {
 
 export const AuthContextProvider = ({ children }) => {
   const [userData, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const getUserData = async (user) => {
+    try {
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists()) {
+        setCurrentUser(docSnap.data());
+      } else {
+        setCurrentUser(null);
+      }
+    } catch (error) {
+      console.log("Error getting document:", error);
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (userData) => {
       if (userData) {
+        getUserData(userData);
         setUser({
           uid: userData.uid,
           email: userData.email,
@@ -46,7 +64,9 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userData, signIn, signUp, logOut }}>
+    <AuthContext.Provider
+      value={{ currentUser, userData, signIn, signUp, logOut }}
+    >
       {loading ? null : children}
     </AuthContext.Provider>
   );

@@ -10,7 +10,7 @@ import { Navigate } from "react-router-dom";
 
 const UserView = ({ user, data }) => {
   const currentDay = moment().locale("es").format("dddd, D [de] MMM");
-  const { userData, logOut } = useAuth();
+  const { currentUser, userData, logOut } = useAuth();
 
   const updateTurns = () => {
     const oldTurn = data.filter((turn) => turn.time === user.turn)[0];
@@ -44,6 +44,8 @@ const UserView = ({ user, data }) => {
   if (!userData) {
     return <Navigate to="/login" />;
   }
+
+  console.log(currentUser);
 
   if (user) {
     if (user.turn !== "") {
