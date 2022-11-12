@@ -55,8 +55,10 @@ const RegisterView = () => {
     console.log("Failed:", errorInfo);
   };
 
+
   return (
     <div>
+      <h1>Hola</h1>
       <Form
         name="basic"
         labelCol={{
