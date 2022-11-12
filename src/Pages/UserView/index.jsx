@@ -45,8 +45,6 @@ const UserView = ({ user, data }) => {
     return <Navigate to="/login" />;
   }
 
-  console.log("Usuario local", currentUser);
-
   if (user) {
     if (user.turn !== "") {
       return (
@@ -56,10 +54,12 @@ const UserView = ({ user, data }) => {
             <h2>Tienes un turno asignado:</h2>
             <p>{user.turn ?? "-"}</p>
           </div>
+
           <div className="user-view-cancel">
             <Button onClick={handleClick} type={"danger"}>
               Cancelar Reserva
             </Button>
+            <button onClick={logOut}>Cerrar Sesion</button>
           </div>
         </div>
       );

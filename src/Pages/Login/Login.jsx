@@ -45,7 +45,7 @@ function Login() {
   };
 
   if (userData) {
-    return <Navigate to="/gestionar-mis-reservas/test" />;
+    return <Navigate to="/home" />;
   }
 
   return (
