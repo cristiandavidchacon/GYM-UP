@@ -63,6 +63,7 @@ const RegisterView = () => {
 
   return (
     <div>
+      <h1>Hola</h1>
       <Form
         name="basic"
         labelCol={{
