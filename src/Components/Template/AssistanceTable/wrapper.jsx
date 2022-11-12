@@ -42,6 +42,7 @@ const AssistanceTableWrapper = () => {
     },
   ];
 
+  const [tempDataSource, setTempDataSource] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const curentDay = moment().format(dateFormat);
 
@@ -69,7 +70,7 @@ const AssistanceTableWrapper = () => {
         getKey += 1;
         items.push(data);
       });
-      setDataSource(items);
+      setTempDataSource(items);
     });
 
     return () => {
@@ -77,25 +78,27 @@ const AssistanceTableWrapper = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // data is incomplete
-    if (dataSource.length > 0 && dataSource[0].name.length === 0) {
-      const completeData = dataSource.map(async (current) => {
-        const docRef = doc(db, "users", current.userId);
-        const docSnap = await getDoc(docRef);
-        const docData = await docSnap.data();
+  const getUser = async (userId) => {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  };
 
-        const newData = {
-          ...current,
-          name: docData?.name,
-          email: docData?.email,
-          turn: docData?.turn,
-        };
-        return newData;
+  useEffect(() => {
+    if (tempDataSource.length > 0 && tempDataSource[0].name.length === 0) {
+      tempDataSource.map((currentTempData) => {
+        getUser(currentTempData.userId).then((userData) => {
+          const completeData = {
+            ...currentTempData,
+            name: userData?.name,
+            email: userData?.email,
+            turn: userData?.turn,
+          };
+          setDataSource((dataSource) => [...dataSource, completeData]);
+        });
       });
-      console.log(completeData);
     }
-  }, [dataSource]);
+  }, [tempDataSource]);
 
   return <AssistanceTable data={dataSource} columnHeaders={defaultColumns} />;
 };
