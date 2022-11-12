@@ -5,9 +5,12 @@ import ScheduleList from "../../Components/Atom/ScheduleList";
 import { updateDoc, doc, deleteDoc } from "firebase/firestore";
 import db from "../../Config/firebase";
 import "./style.css";
+import { useAuth } from "../../../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const UserView = ({ user, data }) => {
   const currentDay = moment().locale("es").format("dddd, D [de] MMM");
+  const { userData, logOut } = useAuth();
 
   const updateTurns = () => {
     const oldTurn = data.filter((turn) => turn.time === user.turn)[0];
@@ -38,6 +41,10 @@ const UserView = ({ user, data }) => {
     updateUser();
   };
 
+  if (!userData) {
+    return <Navigate to="/login" />;
+  }
+
   if (user) {
     if (user.turn !== "") {
       return (
@@ -58,6 +65,7 @@ const UserView = ({ user, data }) => {
       return (
         <div className="user-view-container">
           <h1 className="user-view-item">{currentDay ?? "-"}</h1>
+          <button onClick={logOut}>Cerrar Sesion</button>
           <div className="user-view-item">
             <ScheduleList userId={user.id} schedules={data} />
           </div>
