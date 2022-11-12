@@ -7,38 +7,39 @@ import db from "../../Config/firebase";
 import "./style.css";
 import { useAuth } from "../../../context/AuthContext";
 import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const UserView = ({data }) => {
+const UserView = ({ data }) => {
   const currentDay = moment().locale("es").format("dddd, D [de] MMM");
   const { currentUser, userData, logOut } = useAuth();
 
-  const updateTurns = () => {
-    const oldTurn = data.filter((turn) => turn.time === user.turn)[0];
+  const updateTurns = async () => {
+    const oldTurn = data.filter((turn) => turn.time === currentUser.turn)[0];
     const newCapacity = oldTurn.capacity + 1;
 
     const turnRef = doc(db, "turns", oldTurn.id);
-    updateDoc(turnRef, {
+    await updateDoc(turnRef, {
       capacity: newCapacity,
     });
   };
 
-  const updateUser = () => {
+  const updateUser = async () => {
     const userRef = doc(db, "users", currentUser.uID);
-    updateDoc(userRef, {
+    await updateDoc(userRef, {
       turn: "",
       assistanceId: "",
     });
   };
 
-  const deleteAssistance = () => {
+  const deleteAssistance = async () => {
     const assistance = doc(db, "assistance", currentUser.assistanceId);
-    deleteDoc(assistance);
+    await deleteDoc(assistance);
   };
 
   const handleClick = () => {
-    deleteAssistance();
     updateTurns();
     updateUser();
+    deleteAssistance();
   };
 
   if (!userData) {

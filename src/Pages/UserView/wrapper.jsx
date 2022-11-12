@@ -13,9 +13,6 @@ import db from "../../Config/firebase";
 
 const UserViewWrapper = () => {
   const [turns, setTurns] = useState([]);
-  const [loggedUser, setLoggedUser] = useState({});
-  const {currentUser}=useAuth()
-  const userId = currentUser.codigo;
 
   // const usersRef = collection(db, "users");
   // const userQuery = query(usersRef, where("userId", "==", userId));

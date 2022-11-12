@@ -99,6 +99,7 @@ const RegisterView = () => {
           <Button type="primary" htmlType="submit">
             Validar Asistencia
           </Button>
+          <button onClick={logOut}>Logout</button>
         </Form.Item>
       </Form>
     </div>

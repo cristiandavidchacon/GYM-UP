@@ -19,7 +19,7 @@ import { Navigate, Link } from "react-router-dom";
 
 import db from "../../Config/firebase";
 
-import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 function Register() {
   const { userData, signUp } = useAuth();
@@ -61,7 +61,7 @@ function Register() {
       role: credentials.role,
       codigo: credentials.codigo,
       uID: userData.uid,
-      turn:credentials.turn
+      turn: credentials.turn,
     });
   };
 
