@@ -24,7 +24,7 @@ const RegisterView = () => {
     const assistanceRef = collection(db, "assistance");
     const assistanceQuery = query(
       assistanceRef,
-      where("userId", "==", userId),
+      where("codigo", "==", userId),
       where("day", "==", currentDay)
     );
     const subAssistance = onSnapshot(assistanceQuery, (querySnapshot) => {
@@ -40,22 +40,43 @@ const RegisterView = () => {
     };
   }, [userId]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (assistanceId.length > 0) {
+  //     const assistanceRef = doc(db, "assistance", assistanceId);
+  //     updateDoc(assistanceRef, {
+  //       assist: true,
+  //     });
+  //   }
+  // }, [assistanceId]);
+
+  // const onFinish = (values) => {
+  //   setUserId(values.userId);
+  //   alert("Registro exitoso");
+  // };
+
+
+
+
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log("Failed:", errorInfo);
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     if (assistanceId.length > 0) {
-      const assistanceRef = doc(db, "assistance", assistanceId);
-      updateDoc(assistanceRef, {
-        assist: true,
-      });
+      try {
+        const assistanceRef = doc(db, "assistance", assistanceId);
+        await updateDoc(assistanceRef, {
+          assist: true,
+        });
+        setUserId(values.userId);
+        alert("Registro exitoso");
+      } catch (error) {
+        console.log(error);
+        alert("Error al registrar");
+      }
     }
-  }, [assistanceId]);
-
-  const onFinish = (values) => {
-    setUserId(values.userId);
-    alert("Registro exitoso");
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
   };
 
   if (!userData) {
@@ -64,7 +85,7 @@ const RegisterView = () => {
 
   return (
     <div>
-      <h1>Hola</h1>
+      <h1>Asistencias</h1>
       <Form
         name="basic"
         labelCol={{
@@ -73,8 +94,9 @@ const RegisterView = () => {
         wrapperCol={{
           span: 16,
         }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        // onFinish={onFinish}
+        onSubmit = {handleSubmit}
+        // onFinishFailed={onFinishFailed}
         autoComplete="on"
       >
         <Form.Item

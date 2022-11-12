@@ -70,7 +70,7 @@ const UserView = ({ data }) => {
           <h1 className="user-view-item">{currentDay ?? "-"}</h1>
           <button onClick={logOut}>Cerrar Sesion</button>
           <div className="user-view-item">
-            <ScheduleList userId={currentUser.uID} schedules={data} />
+            <ScheduleList userId={currentUser.uID} codigo={currentUser.codigo} schedules={data} />
           </div>
         </div>
       );

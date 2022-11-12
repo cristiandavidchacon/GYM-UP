@@ -6,6 +6,7 @@ import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import RegisterView from "./Pages/RegisterView";
 import UserViewWrapper from "./Pages/UserView/wrapper";
+import "./global.css"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/administrar-reservas" element={<AdminView />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<div>NOT FOUND</div>} />
         </Routes>

@@ -1,11 +1,11 @@
 import Schedule from "../Schedule";
 import "./style.css";
 
-const ScheduleList = ({ userId, schedules }) => {
+const ScheduleList = ({ userId, codigo, schedules }) => {
   const schedulesList = schedules.map((currentSchedule) => {
     return (
       <div key={currentSchedule.turnId} className="schedule-item">
-        <Schedule userId={userId} data={currentSchedule} />
+        <Schedule userId={userId} data={currentSchedule} codigo={codigo} />
       </div>
     );
   });

@@ -67,7 +67,7 @@ function Register() {
 
   if (userData) {
     setData(userData.uid);
-    return <Navigate to="/gestionar-mis-reservas/test" />;
+    return <Navigate to="/home" />;
   }
 
   return (

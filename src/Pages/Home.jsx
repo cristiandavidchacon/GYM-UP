@@ -5,7 +5,11 @@ import AdminView from "./AdminView";
 import RegisterView from "./RegisterView";
 
 function Home() {
-  const { currentUser } = useAuth();
+  const { currentUser, userData, logOut } = useAuth();
+
+  if(!userData){
+    return <Navigate to="/login"/>
+  }
   return (
     <div>
       {currentUser?.role === "U" ? (

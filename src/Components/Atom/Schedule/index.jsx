@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import db from "../../../Config/firebase";
 import { dateFormat } from "../../../Config/moment.format";
 
-const Schedule = ({ userId, data }) => {
+const Schedule = ({ userId, codigo, data }) => {
   const user = useParams("userid")?.userid;
   const assistanceId = useRef("");
 
@@ -16,6 +16,7 @@ const Schedule = ({ userId, data }) => {
       assist: false,
       day,
       userId: user,
+      codigo: codigo
     };
     const assistanceRef = collection(db, "assistance");
     const assistance = await addDoc(assistanceRef, newAssistance);
