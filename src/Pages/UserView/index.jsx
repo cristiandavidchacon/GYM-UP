@@ -5,52 +5,62 @@ import ScheduleList from "../../Components/Atom/ScheduleList";
 import { updateDoc, doc, deleteDoc } from "firebase/firestore";
 import db from "../../Config/firebase";
 import "./style.css";
+import { useAuth } from "../../../context/AuthContext";
+import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const UserView = ({ user, data }) => {
+const UserView = ({ data }) => {
   const currentDay = moment().locale("es").format("dddd, D [de] MMM");
+  const { currentUser, userData, logOut } = useAuth();
 
-  const updateTurns = () => {
-    const oldTurn = data.filter((turn) => turn.time === user.turn)[0];
+  const updateTurns = async () => {
+    const oldTurn = data.filter((turn) => turn.time === currentUser.turn)[0];
     const newCapacity = oldTurn.capacity + 1;
 
     const turnRef = doc(db, "turns", oldTurn.id);
-    updateDoc(turnRef, {
+    await updateDoc(turnRef, {
       capacity: newCapacity,
     });
   };
 
-  const updateUser = () => {
-    const userRef = doc(db, "users", user.id);
-    updateDoc(userRef, {
+  const updateUser = async () => {
+    const userRef = doc(db, "users", currentUser.uID);
+    await updateDoc(userRef, {
       turn: "",
       assistanceId: "",
     });
   };
 
-  const deleteAssistance = () => {
-    const assistance = doc(db, "assistance", user.assistanceId);
-    deleteDoc(assistance);
+  const deleteAssistance = async () => {
+    const assistance = doc(db, "assistance", currentUser.assistanceId);
+    await deleteDoc(assistance);
   };
 
   const handleClick = () => {
-    deleteAssistance();
     updateTurns();
     updateUser();
+    deleteAssistance();
   };
 
-  if (user) {
-    if (user.turn !== "") {
+  if (!userData) {
+    return <Navigate to="/login" />;
+  }
+
+  if (currentUser) {
+    if (currentUser.turn !== "") {
       return (
         <div className="user-view-container">
           <h1 className="user-view-item">{currentDay ?? "-"}</h1>
           <div className="user-view-item">
             <h2>Tienes un turno asignado:</h2>
-            <p>{user.turn ?? "-"}</p>
+            <p>{currentUser.turn ?? "-"}</p>
           </div>
+
           <div className="user-view-cancel">
             <Button onClick={handleClick} type={"danger"}>
               Cancelar Reserva
             </Button>
+            <button onClick={logOut}>Cerrar Sesion</button>
           </div>
         </div>
       );
@@ -58,8 +68,9 @@ const UserView = ({ user, data }) => {
       return (
         <div className="user-view-container">
           <h1 className="user-view-item">{currentDay ?? "-"}</h1>
+          <button onClick={logOut}>Cerrar Sesion</button>
           <div className="user-view-item">
-            <ScheduleList userId={user.id} schedules={data} />
+            <ScheduleList userId={currentUser.uID} schedules={data} />
           </div>
         </div>
       );

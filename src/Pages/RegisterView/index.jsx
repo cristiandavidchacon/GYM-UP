@@ -9,6 +9,8 @@ import {
 } from "firebase/firestore";
 import moment from "moment/moment";
 import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 import db from "../../Config/firebase";
 import { dateFormat } from "../../Config/moment.format";
 
@@ -16,6 +18,7 @@ const RegisterView = () => {
   const [userId, setUserId] = useState("");
   const [assistanceId, setAssistanceId] = useState("");
   const currentDay = moment().format(dateFormat);
+  const { userData, logOut } = useAuth();
 
   useEffect(() => {
     const assistanceRef = collection(db, "assistance");
@@ -55,8 +58,13 @@ const RegisterView = () => {
     console.log("Failed:", errorInfo);
   };
 
+  if (!userData) {
+    return <Navigate to="/login" />;
+  }
+
   return (
     <div>
+      <h1>Hola</h1>
       <Form
         name="basic"
         labelCol={{
@@ -91,6 +99,7 @@ const RegisterView = () => {
           <Button type="primary" htmlType="submit">
             Validar Asistencia
           </Button>
+          <button onClick={logOut}>Logout</button>
         </Form.Item>
       </Form>
     </div>

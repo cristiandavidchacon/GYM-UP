@@ -8,15 +8,14 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserView from ".";
+import { useAuth } from "../../../context/AuthContext";
 import db from "../../Config/firebase";
 
 const UserViewWrapper = () => {
   const [turns, setTurns] = useState([]);
-  const [loggedUser, setLoggedUser] = useState({});
-  const userId = useParams("userid")?.userid;
 
-  const usersRef = collection(db, "users");
-  const userQuery = query(usersRef, where("userId", "==", userId));
+  // const usersRef = collection(db, "users");
+  // const userQuery = query(usersRef, where("userId", "==", userId));
 
   const turnsRef = collection(db, "turns");
   const turnQuery = query(turnsRef, orderBy("turnId"));
@@ -24,22 +23,22 @@ const UserViewWrapper = () => {
   /**
    * Get info of logged user
    */
-  useEffect(() => {
-    const subUser = onSnapshot(userQuery, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const temData = doc.data();
-        const data = {
-          ...temData,
-          id: doc.id,
-        };
-        setLoggedUser(data);
-      });
-    });
 
-    return () => {
-      subUser();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const subUser = onSnapshot(userQuery, (querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       const temData = doc.data();
+  //       const data = {
+  //         ...temData,
+  //         id: doc.id,
+  //       };
+  //       setLoggedUser(data);
+  //     });
+  //   });
+  //   return () => {
+  //     subUser();
+  //   };
+  // }, []);
 
   /**
    * Subscribe to all the turns
@@ -65,7 +64,7 @@ const UserViewWrapper = () => {
     };
   }, []);
 
-  return <UserView user={loggedUser} data={turns} />;
+  return <UserView data={turns} />;
 };
 
 export default UserViewWrapper;
