@@ -45,7 +45,7 @@ const UserView = ({ user, data }) => {
     return <Navigate to="/login" />;
   }
 
-  console.log(currentUser);
+  console.log("Usuario local", currentUser);
 
   if (user) {
     if (user.turn !== "") {
