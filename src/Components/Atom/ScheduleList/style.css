@@ -1,0 +1,8 @@
+.schedule-container{
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.schedule-item{
+    padding: 1rem;
+}
