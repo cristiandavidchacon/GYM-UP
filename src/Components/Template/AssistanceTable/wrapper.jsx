@@ -58,7 +58,7 @@ const AssistanceTableWrapper = () => {
       let getKey = 1;
       querySnapshot.forEach((doc) => {
         const tempData = doc.data();
-        const tempAssist = tempData === true ? "Si" : "NO";
+        const tempAssist = tempData.assist === true ? "SI" : "NO";
         const data = {
           key: getKey,
           name: "",

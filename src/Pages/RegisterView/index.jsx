@@ -27,6 +27,7 @@ const RegisterView = () => {
       where("codigo", "==", userId),
       where("day", "==", currentDay)
     );
+
     const subAssistance = onSnapshot(assistanceQuery, (querySnapshot) => {
       querySnapshot.forEach((document) => {
         setAssistanceId(document.id);
@@ -40,43 +41,22 @@ const RegisterView = () => {
     };
   }, [userId]);
 
-  // useEffect(() => {
-  //   if (assistanceId.length > 0) {
-  //     const assistanceRef = doc(db, "assistance", assistanceId);
-  //     updateDoc(assistanceRef, {
-  //       assist: true,
-  //     });
-  //   }
-  // }, [assistanceId]);
-
-  // const onFinish = (values) => {
-  //   setUserId(values.userId);
-  //   alert("Registro exitoso");
-  // };
-
-
-
-
-  // const onFinishFailed = (errorInfo) => {
-  //   console.log("Failed:", errorInfo);
-  // };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  useEffect(() => {
     if (assistanceId.length > 0) {
-      try {
-        const assistanceRef = doc(db, "assistance", assistanceId);
-        await updateDoc(assistanceRef, {
-          assist: true,
-        });
-        setUserId(values.userId);
-        alert("Registro exitoso");
-      } catch (error) {
-        console.log(error);
-        alert("Error al registrar");
-      }
+      const assistanceRef = doc(db, "assistance", assistanceId);
+      updateDoc(assistanceRef, {
+        assist: true,
+      });
     }
+  }, [assistanceId]);
+
+  const onFinish = (values) => {
+    setUserId(values.userId);
+    alert("Registro exitoso");
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   if (!userData) {
@@ -94,18 +74,18 @@ const RegisterView = () => {
         wrapperCol={{
           span: 16,
         }}
-        // onFinish={onFinish}
-        onSubmit = {handleSubmit}
-        // onFinishFailed={onFinishFailed}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
         autoComplete="on"
       >
         <Form.Item
-          label="Ingrese el Id del usuario"
+          label="Ingrese el codigo del usuario"
           name="userId"
           rules={[
             {
               required: true,
-              message: "Por favor ingrese un numero de identificacion",
+              message:
+                "Por favor ingrese el codigo del estudiante o el numero de identificacion del colaborador",
             },
           ]}
         >

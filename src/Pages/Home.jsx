@@ -7,26 +7,23 @@ import RegisterView from "./RegisterView";
 function Home() {
   const { currentUser, userData, logOut } = useAuth();
 
-
-  if(!userData){
-    return <Navigate to="/login"/>
+  if (!userData) {
+    return <Navigate to="/login" />;
   }
   return (
     <div>
       {currentUser?.role === "U" ? (
-        <Navigate to={`/gestionar-mis-reservas/${currentUser.uID}`}/>
+        <Navigate to={`/gestionar-mis-reservas/${currentUser.uID}`} />
       ) : currentUser?.role === "A" ? (
         <AdminView />
-      ) : currentUser?.role==="O"&&(
-        <RegisterView />
+      ) : (
+        currentUser?.role === "O" && <RegisterView />
       )}
 
-    <button onClick={logOut}>
+      {/* <button onClick={logOut}>
       cerrar sesion 
-    </button>
+    </button> */}
     </div>
-
-    
   );
 }
 // rut
