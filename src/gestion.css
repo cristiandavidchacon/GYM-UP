@@ -1,0 +1,21 @@
+html,
+body {
+
+  color: rgb(0, 0, 0);
+  width: 100%;
+  height: 100%;
+
+    background: url('/public/ilustracion-concepto-gimnasio_114360-6550\ \(1\).webp');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+* {
+  box-sizing: border-box;
+}

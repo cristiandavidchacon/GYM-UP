@@ -6,6 +6,7 @@ import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import RegisterView from "./Pages/RegisterView";
 import UserViewWrapper from "./Pages/UserView/wrapper";
+import "./gestion.css"
 import "./global.css"
 
 function App() {
