@@ -7,6 +7,7 @@ import RegisterView from "./RegisterView";
 function Home() {
   const { currentUser, userData, logOut } = useAuth();
 
+
   if(!userData){
     return <Navigate to="/login"/>
   }
@@ -19,8 +20,14 @@ function Home() {
       ) : currentUser?.role==="O"&&(
         <RegisterView />
       )}
+
+    <button onClick={logOut}>
+      cerrar sesion 
+    </button>
     </div>
+
+    
   );
 }
-
+// rut
 export default Home;
